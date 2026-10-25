@@ -1,131 +1,153 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mokka Garden</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f8f5ed">
+<title>Mokka Garden — кафе и меню</title>
 <style>
+:root{--bg:#f8f5ed;--green:#244b3b;--light:#e7eddf;--ink:#252b24;--muted:#777b70;--white:#fffefa}
 *{box-sizing:border-box}
-body{margin:0;background:#f7f1e7;color:#30251e;font-family:Arial,sans-serif}
-header{background:#283d30;color:#fff;padding:28px 18px;text-align:center}
-header h1{margin:0;font-size:34px;letter-spacing:2px}
-header p{color:#e6d6b8}
-main{max-width:900px;margin:auto;padding:20px}
-h2{margin-top:26px}
-.filters{display:flex;gap:8px;flex-wrap:wrap}
-button{border:0;border-radius:9px;padding:11px 15px;cursor:pointer;font-weight:bold}
-.filter{background:#e5d8c4;color:#30251e}
-.filter.active,.add{background:#385641;color:white}
-.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.item,.cart{background:white;border-radius:14px;padding:16px;box-shadow:0 3px 12px #0000000d}
-.item h3{margin:4px 0 8px}
-.item p{color:#74675c;min-height:38px}
-.price{font-weight:bold;font-size:18px;margin:12px 0}
-.add{width:100%}
-.cart{margin-top:18px}
-.cart-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eee}
-.qty button{padding:6px 10px;background:#eee}
-.total{font-size:22px;font-weight:bold;margin:18px 0}
-.actions{display:flex;gap:10px;flex-wrap:wrap}
-.order{background:#283d30;color:white}
-.clear{background:#eee}
-footer{text-align:center;padding:25px;color:#786b60}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif}
+button{font:inherit;cursor:pointer}
+header{padding:17px 5%;display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #e5e0d5}
+.logo{font: bold 25px Georgia,serif;color:var(--green)}
+.logo small{display:block;font:10px Arial;letter-spacing:3px;margin-top:4px}
+.carttop,.primary{border:0;background:var(--green);color:white;border-radius:25px;padding:12px 16px}
+main{max-width:1120px;margin:auto;padding:25px 5% 55px}
+.hero{background:var(--light);padding:28px;border-radius:24px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+.eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--green);font-weight:bold}
+h1,h2,h3{font-family:Georgia,serif}
+h1{font-size:clamp(35px,6vw,58px);line-height:1.06;margin:15px 0}
+.hero p{line-height:1.6;color:#596458}
+.hero img{width:100%;height:255px;object-fit:cover;border-radius:17px}
+section{scroll-margin-top:15px}
+.heading{margin:35px 0 17px}
+.heading h2{font-size:30px;margin:0}
+.heading p{color:var(--muted);font-size:13px}
+.categories{display:flex;gap:8px;overflow:auto;padding:3px 0 15px}
+.cat{white-space:nowrap;border:1px solid #dddcd0;background:transparent;border-radius:25px;padding:10px 15px}
+.cat.active{background:var(--green);color:white;border-color:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.card{border:1px solid #eee8dc;background:var(--white);border-radius:17px;overflow:hidden;display:flex;flex-direction:column}
+.card img{width:100%;height:165px;object-fit:cover;background:#e7e0d2}
+.body{padding:14px;display:flex;flex-direction:column;flex:1}
+.card h3{font-size:20px;margin:0 0 8px}
+.desc{color:var(--muted);font-size:13px;line-height:1.45;min-height:38px}
+.bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:14px}
+.price{font-weight:bold;color:var(--green)}
+.add{width:38px;height:38px;border:0;border-radius:50%;background:var(--green);color:white;font-size:24px}
+.panel{background:var(--white);border:1px solid #e8e1d5;border-radius:20px;padding:22px;margin-top:30px}
+.panel h2{font-size:27px;margin:0 0 15px}
+.cartrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #eee9df}
+.qty{display:flex;align-items:center;gap:10px}
+.qty button{border:1px solid #ddd;background:white;border-radius:50%;width:29px;height:29px}
+.total{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;margin:20px 0}
+.clear{border:0;background:none;color:var(--muted);text-decoration:underline;padding:8px 0}
+.info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.info{background:var(--bg);border-radius:14px;padding:16px;line-height:1.6;overflow-wrap:anywhere}
+.info strong{display:block;color:var(--green);margin-bottom:5px}
+.info a{color:var(--green)}
+.note{font-size:12px;color:var(--muted);line-height:1.5}
+footer{text-align:center;color:var(--muted);padding:25px 10px;font-size:12px}
+@media(max-width:700px){header{padding:15px 4%}.logo{font-size:22px}.hero{grid-template-columns:1fr;padding:21px}.hero img{height:205px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.card img{height:130px}.body{padding:11px}.card h3{font-size:17px}.desc{font-size:12px}.info-grid{grid-template-columns:1fr}}
+@media(max-width:390px){.grid{grid-template-columns:1fr}.card{display:grid;grid-template-columns:110px 1fr}.card img{height:100%;min-height:150px}.card h3{font-size:17px}}
 </style>
 </head>
 <body>
 <header>
-<h1>MOKKA GARDEN</h1>
-<p>Кофе, вкусная еда и уютная атмосфера</p>
+  <div class="logo">Mokka Garden<small>COFFEE · FOOD · MOOD</small></div>
+  <button class="carttop" onclick="document.getElementById('cart').scrollIntoView({behavior:'smooth'})">Корзина · <span id="count">0</span></button>
 </header>
 
 <main>
-<h2>Наше меню</h2>
-<div class="filters">
-<button class="filter active" data-cat="all">Всё меню</button>
-<button class="filter" data-cat="food">Еда</button>
-<button class="filter" data-cat="salad">Салаты</button>
-<button class="filter" data-cat="drink">Напитки</button>
-<button class="filter" data-cat="dessert">Десерты</button>
-</div>
+<section class="hero">
+  <div>
+    <div class="eyebrow">Вкус каждого дня</div>
+    <h1>Твои вкусные моменты начинаются здесь.</h1>
+    <p>Ароматный кофе, аппетитная еда и десерты для хорошего настроения.</p>
+    <button class="primary" onclick="document.getElementById('menu-section').scrollIntoView({behavior:'smooth'})">Посмотреть меню ↓</button>
+  </div>
+  <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80" alt="Кофе в кафе">
+</section>
 
-<div class="menu" id="menu"></div>
+<section id="menu-section">
+  <div class="heading"><h2>Наше меню</h2><p>Выбирай любимое и добавляй в корзину</p></div>
+  <div class="categories" id="categories"></div>
+  <div class="grid" id="menu"></div>
+</section>
 
-<section class="cart">
-<h2>🛒 Ваша корзина</h2>
-<div id="cartItems">Корзина пока пустая</div>
-<div class="total">Итого: <span id="total">0</span> MDL</div>
-<div class="actions">
-<button class="order" onclick="order()">Оформить заказ</button>
-<button class="clear" onclick="clearCart()">Очистить корзину</button>
-</div>
-<p>Демонстрационный сайт: заказ никуда не отправляется.</p>
+<section class="panel" id="cart">
+  <h2>Твоя корзина</h2>
+  <div id="cart-items">Пока пусто. Выбери что-нибудь из меню!</div>
+  <div class="total"><span>Итого</span><span id="total">0 MDL</span></div>
+  <button class="clear" onclick="clearCart()">Очистить корзину</button>
+  <p class="note">Демонстрационная корзина: заказ не отправляется и не оплачивается.</p>
+</section>
+
+<section class="panel" id="contacts">
+  <h2>Контакты и адрес</h2>
+  <p style="color:#777b70;line-height:1.6">Будем рады видеть тебя в Mokka Garden!</p>
+  <div class="info-grid">
+    <div class="info"><strong>📍 Адрес</strong><span>Тестовый</span></div>
+    <div class="info"><strong>☎ Телефон</strong><a href="tel:00000000">00000000</a></div>
+    <div class="info"><strong>🕒 График работы</strong>Ежедневно<br>09:00–21:00</div>
+    <div class="info"><strong>🗺 Как нас найти</strong><a href="https://www.google.com/maps/search/?api=1&query=Тестовый" target="_blank" rel="noopener">Открыть Google Maps ↗</a></div>
+  </div>
+  <p class="note">Адрес и телефон сейчас демонстрационные. Перед реальным использованием замени их на настоящие данные. Ссылка на карту ищет тестовый адрес.</p>
 </section>
 </main>
-
-<footer>© 2026 Mokka Garden</footer>
+<footer>MOKKA GARDEN · Кофе, еда и хорошее настроение</footer>
 
 <script>
 const products=[
-{id:1,name:"Бургер Mokka",desc:"Сочный бургер с овощами и соусом",price:95,cat:"food"},
-{id:2,name:"Паста карбонара",desc:"Паста в сливочном соусе",price:110,cat:"food"},
-{id:3,name:"Салат Цезарь",desc:"Курица, салат, сыр и соус",price:85,cat:"salad"},
-{id:4,name:"Греческий салат",desc:"Овощи, сыр и оливки",price:75,cat:"salad"},
-{id:5,name:"Капучино",desc:"Ароматный кофе с молоком",price:35,cat:"drink"},
-{id:6,name:"Лимонад",desc:"Освежающий лимонный напиток",price:30,cat:"drink"},
-{id:7,name:"Чизкейк",desc:"Нежный сливочный десерт",price:55,cat:"dessert"},
-{id:8,name:"Шоколадный брауни",desc:"Шоколадный десерт",price:45,cat:"dessert"}
+{id:1,name:"Эспрессо",cat:"Напитки",price:25,desc:"Крепкий классический кофе",img:"https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?auto=format&fit=crop&w=700&q=80"},
+{id:2,name:"Американо",cat:"Напитки",price:30,desc:"Кофе с мягким насыщенным вкусом",img:"https://images.unsplash.com/photo-1497515114629-f71d768fd07c?auto=format&fit=crop&w=700&q=80"},
+{id:3,name:"Капучино",cat:"Напитки",price:35,desc:"Эспрессо и нежная молочная пена",img:"https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=700&q=80"},
+{id:4,name:"Латте",cat:"Напитки",price:40,desc:"Мягкий кофе с молоком",img:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=700&q=80"},
+{id:5,name:"Мокка",cat:"Напитки",price:45,desc:"Кофе с шоколадными нотками",img:"https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=700&q=80"},
+{id:6,name:"Холодный кофе",cat:"Напитки",price:45,desc:"Освежающий кофе со льдом",img:"https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=700&q=80"},
+{id:7,name:"Чай",cat:"Напитки",price:20,desc:"Горячий чай для уютного вечера",img:"https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=700&q=80"},
+{id:8,name:"Лимонад",cat:"Напитки",price:30,desc:"Освежающий цитрусовый напиток",img:"https://images.unsplash.com/photo-1513558161293-cbef765edc91?auto=format&fit=crop&w=700&q=80"},
+{id:9,name:"Круассан",cat:"Десерты",price:25,desc:"Хрустящая золотистая выпечка",img:"https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=700&q=80"},
+{id:10,name:"Чизкейк",cat:"Десерты",price:45,desc:"Нежный сливочный десерт",img:"https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=700&q=80"},
+{id:11,name:"Шоколадный торт",cat:"Десерты",price:50,desc:"Насыщенный шоколадный вкус",img:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80"},
+{id:12,name:"Панкейки",cat:"Десерты",price:45,desc:"Мягкие панкейки к завтраку",img:"https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=700&q=80"},
+{id:13,name:"Печенье",cat:"Десерты",price:18,desc:"Сладкое дополнение к кофе",img:"https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=700&q=80"},
+{id:14,name:"Маргарита",cat:"Еда",price:75,desc:"Пицца с томатами и сыром",img:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=700&q=80"},
+{id:15,name:"Бургер",cat:"Еда",price:80,desc:"Булочка, котлета и свежие овощи",img:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=700&q=80"},
+{id:16,name:"Картофель фри",cat:"Еда",price:35,desc:"Золотистый хрустящий картофель",img:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=700&q=80"},
+{id:17,name:"Наггетсы",cat:"Еда",price:45,desc:"Хрустящие кусочки курицы",img:"https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=700&q=80"},
+{id:18,name:"Паста",cat:"Еда",price:65,desc:"Паста с ароматным соусом",img:"https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=700&q=80"},
+{id:19,name:"Сэндвич",cat:"Еда",price:40,desc:"Хлеб, сыр и свежие овощи",img:"https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=700&q=80"},
+{id:20,name:"Салат овощной",cat:"Еда",price:45,desc:"Свежие овощи и лёгкая заправка",img:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=700&q=80"},
+{id:21,name:"Завтрак",cat:"Завтраки",price:60,desc:"Сытный вариант для начала дня",img:"https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=700&q=80"},
+{id:22,name:"Омлет",cat:"Завтраки",price:40,desc:"Нежный омлет на завтрак",img:"https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=700&q=80"},
+{id:23,name:"Овсяная каша",cat:"Завтраки",price:30,desc:"Тёплый и простой завтрак",img:"https://images.unsplash.com/photo-1517673132405-a56a62b18caf?auto=format&fit=crop&w=700&q=80"},
+{id:24,name:"Фруктовый боул",cat:"Завтраки",price:50,desc:"Фрукты и йогурт",img:"https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=700&q=80"}
 ];
-let cart={};
-
-function renderMenu(category="all"){
-const menu=document.getElementById("menu");
-menu.innerHTML="";
-products.filter(p=>category==="all"||p.cat===category).forEach(p=>{
-const el=document.createElement("article");
-el.className="item";
-el.innerHTML=`<h3>${p.name}</h3><p>${p.desc}</p><div class="price">${p.price} MDL</div><button class="add" onclick="add(${p.id})">＋ В корзину</button>`;
-menu.appendChild(el);
-});
+let active="Все",cart={};
+const categories=["Все","Напитки","Еда","Десерты","Завтраки"];
+function renderCategories(){
+document.getElementById("categories").innerHTML=categories.map(c=>`<button class="cat ${active===c?'active':''}" onclick="setCategory('${c}')">${c}</button>`).join("");
 }
+function renderMenu(){
+const list=active==="Все"?products:products.filter(p=>p.cat===active);
+document.getElementById("menu").innerHTML=list.map(p=>`<article class="card"><img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'"><div class="body"><h3>${p.name}</h3><div class="desc">${p.desc}</div><div class="bottom"><span class="price">${p.price} MDL</span><button class="add" aria-label="Добавить ${p.name}" onclick="add(${p.id})">+</button></div></div></article>`).join("");
+}
+function setCategory(c){active=c;renderCategories();renderMenu()}
 function add(id){cart[id]=(cart[id]||0)+1;renderCart()}
-function change(id,amount){
-cart[id]=(cart[id]||0)+amount;
-if(cart[id]<=0)delete cart[id];
-renderCart();
-}
-function renderCart(){
-const box=document.getElementById("cartItems");
-const ids=Object.keys(cart);
-if(!ids.length)box.textContent="Корзина пока пустая";
-else{
-box.innerHTML="";
-ids.forEach(id=>{
-const p=products.find(x=>x.id===Number(id));
-const row=document.createElement("div");
-row.className="cart-row";
-row.innerHTML=`<span>${p.name}<br>${p.price} × ${cart[id]} MDL</span><span class="qty"><button onclick="change(${id},-1)">−</button> ${cart[id]} <button onclick="change(${id},1)">＋</button></span>`;
-box.appendChild(row);
-});
-}
-const total=products.reduce((sum,p)=>sum+p.price*(cart[p.id]||0),0);
-document.getElementById("total").textContent=total;
-}
+function change(id,n){cart[id]=(cart[id]||0)+n;if(cart[id]<=0)delete cart[id];renderCart()}
 function clearCart(){cart={};renderCart()}
-function order(){
-if(!Object.keys(cart).length){alert("Сначала добавьте блюда в корзину!");return}
-alert("Это демонстрационный сайт. Настоящий заказ не отправлен.");
+function renderCart(){
+const ids=Object.keys(cart);
+const count=ids.reduce((s,id)=>s+cart[id],0);
+const total=ids.reduce((s,id)=>s+products.find(p=>p.id==id).price*cart[id],0);
+document.getElementById("count").textContent=count;
+document.getElementById("total").textContent=total+" MDL";
+document.getElementById("cart-items").innerHTML=ids.length?ids.map(id=>{const p=products.find(x=>x.id==id);return `<div class="cartrow"><span>${p.name}<br><small>${p.price} MDL за шт.</small></span><div class="qty"><button onclick="change(${id},-1)" aria-label="Уменьшить">−</button><span>${cart[id]}</span><button onclick="change(${id},1)" aria-label="Увеличить">+</button></div></div>`}).join(""):"Пока пусто. Выбери что-нибудь из меню!";
 }
-document.querySelectorAll(".filter").forEach(btn=>{
-btn.addEventListener("click",()=>{
-document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
-btn.classList.add("active");
-renderMenu(btn.dataset.cat);
-});
-});
-renderMenu();
-renderCart();
+renderCategories();renderMenu();renderCart();
 </script>
 </body>
 </html>
-<!
