@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mokka Garden</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f7f1e7;color:#30251e;font-family:Arial,sans-serif}
+header{background:#283d30;color:#fff;padding:28px 18px;text-align:center}
+header h1{margin:0;font-size:34px;letter-spacing:2px}
+header p{color:#e6d6b8}
+main{max-width:900px;margin:auto;padding:20px}
+h2{margin-top:26px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+button{border:0;border-radius:9px;padding:11px 15px;cursor:pointer;font-weight:bold}
+.filter{background:#e5d8c4;color:#30251e}
+.filter.active,.add{background:#385641;color:white}
+.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.item,.cart{background:white;border-radius:14px;padding:16px;box-shadow:0 3px 12px #0000000d}
+.item h3{margin:4px 0 8px}
+.item p{color:#74675c;min-height:38px}
+.price{font-weight:bold;font-size:18px;margin:12px 0}
+.add{width:100%}
+.cart{margin-top:18px}
+.cart-row{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #eee}
+.qty button{padding:6px 10px;background:#eee}
+.total{font-size:22px;font-weight:bold;margin:18px 0}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.order{background:#283d30;color:white}
+.clear{background:#eee}
+footer{text-align:center;padding:25px;color:#786b60}
+</style>
+</head>
+<body>
+<header>
+<h1>MOKKA GARDEN</h1>
+<p>Кофе, вкусная еда и уютная атмосфера</p>
+</header>
+
+<main>
+<h2>Наше меню</h2>
+<div class="filters">
+<button class="filter active" data-cat="all">Всё меню</button>
+<button class="filter" data-cat="food">Еда</button>
+<button class="filter" data-cat="salad">Салаты</button>
+<button class="filter" data-cat="drink">Напитки</button>
+<button class="filter" data-cat="dessert">Десерты</button>
+</div>
+
+<div class="menu" id="menu"></div>
+
+<section class="cart">
+<h2>🛒 Ваша корзина</h2>
+<div id="cartItems">Корзина пока пустая</div>
+<div class="total">Итого: <span id="total">0</span> MDL</div>
+<div class="actions">
+<button class="order" onclick="order()">Оформить заказ</button>
+<button class="clear" onclick="clearCart()">Очистить корзину</button>
+</div>
+<p>Демонстрационный сайт: заказ никуда не отправляется.</p>
+</section>
+</main>
+
+<footer>© 2026 Mokka Garden</footer>
+
+<script>
+const products=[
+{id:1,name:"Бургер Mokka",desc:"Сочный бургер с овощами и соусом",price:95,cat:"food"},
+{id:2,name:"Паста карбонара",desc:"Паста в сливочном соусе",price:110,cat:"food"},
+{id:3,name:"Салат Цезарь",desc:"Курица, салат, сыр и соус",price:85,cat:"salad"},
+{id:4,name:"Греческий салат",desc:"Овощи, сыр и оливки",price:75,cat:"salad"},
+{id:5,name:"Капучино",desc:"Ароматный кофе с молоком",price:35,cat:"drink"},
+{id:6,name:"Лимонад",desc:"Освежающий лимонный напиток",price:30,cat:"drink"},
+{id:7,name:"Чизкейк",desc:"Нежный сливочный десерт",price:55,cat:"dessert"},
+{id:8,name:"Шоколадный брауни",desc:"Шоколадный десерт",price:45,cat:"dessert"}
+];
+let cart={};
+
+function renderMenu(category="all"){
+const menu=document.getElementById("menu");
+menu.innerHTML="";
+products.filter(p=>category==="all"||p.cat===category).forEach(p=>{
+const el=document.createElement("article");
+el.className="item";
+el.innerHTML=`<h3>${p.name}</h3><p>${p.desc}</p><div class="price">${p.price} MDL</div><button class="add" onclick="add(${p.id})">＋ В корзину</button>`;
+menu.appendChild(el);
+});
+}
+function add(id){cart[id]=(cart[id]||0)+1;renderCart()}
+function change(id,amount){
+cart[id]=(cart[id]||0)+amount;
+if(cart[id]<=0)delete cart[id];
+renderCart();
+}
+function renderCart(){
+const box=document.getElementById("cartItems");
+const ids=Object.keys(cart);
+if(!ids.length)box.textContent="Корзина пока пустая";
+else{
+box.innerHTML="";
+ids.forEach(id=>{
+const p=products.find(x=>x.id===Number(id));
+const row=document.createElement("div");
+row.className="cart-row";
+row.innerHTML=`<span>${p.name}<br>${p.price} × ${cart[id]} MDL</span><span class="qty"><button onclick="change(${id},-1)">−</button> ${cart[id]} <button onclick="change(${id},1)">＋</button></span>`;
+box.appendChild(row);
+});
+}
+const total=products.reduce((sum,p)=>sum+p.price*(cart[p.id]||0),0);
+document.getElementById("total").textContent=total;
+}
+function clearCart(){cart={};renderCart()}
+function order(){
+if(!Object.keys(cart).length){alert("Сначала добавьте блюда в корзину!");return}
+alert("Это демонстрационный сайт. Настоящий заказ не отправлен.");
+}
+document.querySelectorAll(".filter").forEach(btn=>{
+btn.addEventListener("click",()=>{
+document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+renderMenu(btn.dataset.cat);
+});
+});
+renderMenu();
+renderCart();
+</script>
+</body>
+</html>
+<!
